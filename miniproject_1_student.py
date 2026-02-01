@@ -52,20 +52,22 @@ def get_model_id_gdrive(model_type):
 
 
 def download_glove_embeddings_gdrive(model_type):
-    # Get glove embeddings from google drive
-    word_index_id, embeddings_id = get_model_id_gdrive(model_type)
-
-    # Use gdown to get files from google drive
     embeddings_temp = "embeddings_" + str(model_type) + "_temp.npy"
     word_index_temp = "word_index_dict_" + str(model_type) + "_temp.pkl"
 
-    # Download word_index pickle file
-    print("Downloading word index dictionary....\n")
-    gdown.download(id=word_index_id, output=word_index_temp, quiet=False)
+    word_index_id, embeddings_id = get_model_id_gdrive(model_type)
 
-    # Download embeddings numpy file
-    print("Donwloading embedings...\n\n")
-    gdown.download(id=embeddings_id, output=embeddings_temp, quiet=False)
+    if not os.path.exists(embeddings_temp):
+        my_embedding_id = "1-o4J0RQ47dwuC6J8pHJOffuLqu1ZBcHn"
+
+        print(f"Downloading {embeddings_temp} from MY Google Drive...")
+        gdown.download(id=my_embedding_id, output=embeddings_temp, quiet=False)
+
+    if not os.path.exists(word_index_temp):
+        print(f"Downloading word index dictionary....\n")
+        gdown.download(id=word_index_id, output=word_index_temp, quiet=False)
+
+    return word_index_id, embeddings_id
 
 
 # @st.cache_data()
